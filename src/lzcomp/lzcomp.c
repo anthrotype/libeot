@@ -881,19 +881,16 @@ static unsigned char *Decode( register LZCOMP *t, long *size )
 
 
 #ifdef COMPRESS_ON
-void * memcpyHuge( void * object2, void * object1, unsigned long size )
-{
-    unsigned long  i;
-    void * object2Ptr;
-    object2Ptr = object2;
-    for (i=0; i<size; i++) {
-        char __huge * object2huge = (char __huge *)object2;
-        *object2huge = *(((char __huge *)object1));
-        object2++;
-        object1++;
-    }
-    return object2Ptr;
-}
+// void * memcpyHuge( void * object2, void * object1, unsigned long size )
+// {
+//     unsigned long  i;
+//     void * object2Ptr;
+//     object2Ptr = object2;
+//     for (i=0; i<size; i++) {
+//         *(((char __huge *)object2)++) = *(((char __huge *)object1)++);
+//     }
+//     return object2Ptr;
+// }
 
 /* Call this method to compress a memory area */
 unsigned char *MTX_LZCOMP_PackMemory( register LZCOMP *t, void *dataIn, long size_in, long *sizeOut )
@@ -923,7 +920,8 @@ unsigned char *MTX_LZCOMP_PackMemory( register LZCOMP *t, void *dataIn, long siz
     /* Allocate Memory */
     t->ptr1 = (unsigned char *)MTX_mem_malloc( t->mem, sizeof(unsigned char) * (t->length1 + preLoadSize) );
     
-    memcpyHuge( (unsigned char __huge *)t->ptr1+preLoadSize, dataIn, t->length1 );
+    // memcpyHuge( (unsigned char __huge *)t->ptr1+preLoadSize, dataIn, t->length1 );
+    memcpy( (unsigned char __huge *)t->ptr1+preLoadSize, dataIn, t->length1 );
     
     t->usingRunLength = false;
     {
