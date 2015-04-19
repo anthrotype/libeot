@@ -17,7 +17,6 @@
 
 static PyObject *LZCompError;
 
-
 static PyObject* lzcomp_decompress(PyObject *self, PyObject *args) {
 
   uint8_t *input;
@@ -45,10 +44,8 @@ static PyObject* lzcomp_decompress(PyObject *self, PyObject *args) {
   return PyBytes_FromStringAndSize((char*)output, output_length);
 }
 
-
 PyDoc_STRVAR(compress__doc__,
 "compress(string) -- Returned compressed string.");
-
 
 static PyObject* lzcomp_compress(PyObject *self, PyObject *args) {
 
@@ -77,81 +74,8 @@ static PyObject* lzcomp_compress(PyObject *self, PyObject *args) {
   return PyBytes_FromStringAndSize((char*)output, output_length);
 }
 
-
-// static PyObject* brotli_compress(PyObject *self, PyObject *args) {
-//   PyObject *ret = NULL;
-//   PyObject* transform = NULL;
-//   uint8_t *input, *output;
-//   size_t length, output_length;
-//   BrotliParams::Mode mode = (BrotliParams::Mode) -1;
-//   int ok;
-
-//   ok = PyArg_ParseTuple(args, "s#|O&O!:compress",
-//                         &input, &length,
-//                         &mode_convertor, &mode,
-//                         &PyBool_Type, &transform);
-
-//   if (!ok)
-//     return NULL;
-
-//   output_length = 1.2 * length + 10240;
-//   output = new uint8_t[output_length];
-
-//   BrotliParams params;
-//   if (mode != -1)
-//     params.mode = mode;
-//   if (transform)
-//     params.enable_transforms = PyObject_IsTrue(transform);
-
-//   ok = BrotliCompressBuffer(params, length, input,
-//                             &output_length, output);
-//   if (ok) {
-//     ret = PyBytes_FromStringAndSize((char*)output, output_length);
-//   } else {
-//     PyErr_SetString(BrotliError, "BrotliCompressBuffer failed");
-//   }
-
-//   delete[] output;
-
-//   return ret;
-// }
-
-// int output_callback(void* data, const uint8_t* buf, size_t count) {
-//   std::vector<uint8_t> *output = (std::vector<uint8_t> *)data;
-//   output->insert(output->end(), buf, buf + count);
-//   return (int)count;
-// }
-
 PyDoc_STRVAR(decompress__doc__,
 "decompress(string) -- Return decompressed string.");
-
-// static PyObject* brotli_decompress(PyObject *self, PyObject *args) {
-//   PyObject *ret = NULL;
-//   uint8_t *input;
-//   size_t length;
-//   int ok;
-
-//   ok = PyArg_ParseTuple(args, "s#:decompress", &input, &length);
-//   if (!ok)
-//     return NULL;
-
-//   BrotliMemInput memin;
-//   BrotliInput in = BrotliInitMemInput(input, length, &memin);
-
-//   BrotliOutput out;
-//   std::vector<uint8_t> output;
-//   out.cb_ = &output_callback;
-//   out.data_ = &output;
-
-//   ok = BrotliDecompress(in, out);
-//   if (ok) {
-//     ret = PyBytes_FromStringAndSize((char*)output.data(), output.size());
-//   } else {
-//     PyErr_SetString(BrotliError, "BrotliDecompress failed");
-//   }
-
-//   return ret;
-// }
 
 static PyMethodDef lzcomp_methods[] = {
   {"compress",   lzcomp_compress,   METH_VARARGS, compress__doc__},
