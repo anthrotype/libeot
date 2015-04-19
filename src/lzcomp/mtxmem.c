@@ -4,6 +4,8 @@
  */
 #include <string.h> /* for size_t */
 #include <stdlib.h>
+
+#include "config.h"
 #include "MTXMEM.H"
 
 void *MTX_mem_malloc(MTX_MemHandler *t, unsigned long size)

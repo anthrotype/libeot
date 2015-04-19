@@ -11,6 +11,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 
+#include "config.h"
 #include "BITIO.H"
 #include "AHUFF.H"
 #include "LZCOMP.H"
@@ -885,8 +886,12 @@ void * memcpyHuge( void * object2, void * object1, unsigned long size )
     unsigned long  i;
     void * object2Ptr;
     object2Ptr = object2;
-    for (i=0; i<size; i++)
-      *(((char __huge *)object2)++) = *(((char __huge *)object1)++);
+    for (i=0; i<size; i++) {
+        char __huge * object2huge = (char __huge *)object2;
+        *object2huge = *(((char __huge *)object1));
+        object2++;
+        object1++;
+    }
     return object2Ptr;
 }
 
